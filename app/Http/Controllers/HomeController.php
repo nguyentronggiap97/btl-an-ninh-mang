@@ -7,6 +7,8 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use phpseclib\Crypt\RSA as Crypt_RSA;
 
 class HomeController extends Controller
 {
@@ -39,7 +41,7 @@ class HomeController extends Controller
     public function messages(): JsonResponse
     {
         $messages = Message::with('user')->get()->append('time');
-
+        Log::info($messages);
         return response()->json($messages);
     }
 
