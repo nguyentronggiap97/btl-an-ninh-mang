@@ -8,7 +8,9 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use phpseclib\Crypt\RSA as Crypt_RSA;
+use Illuminate\Support\Facades\Storage;
+use Math_BigInteger;
+use phpseclib3\Crypt\RSA;
 
 class HomeController extends Controller
 {
@@ -42,14 +44,21 @@ class HomeController extends Controller
     {
         $messages = Message::with('user')->get()->append('time');
         Log::info($messages);
+        foreach ($messages as $key => $value) {
+            $value->text = RSAController::decRSA($value->text);
+        }
+
         return response()->json($messages);
     }
 
     public function message(Request $request): JsonResponse
     {
+        $text = $request->get('text');
+        $textSave = RSAController::ecRSA($text);
+        
         $message = Message::create([
             'user_id' => auth()->id(),
-            'text' => $request->get('text'),
+            'text' => $textSave,
         ]);
 
         SendMessage::dispatch($message);

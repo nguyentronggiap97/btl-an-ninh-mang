@@ -10,6 +10,7 @@
         "laravel/reverb": "@beta",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
+        "pear/math_biginteger": "^1.0",
         "phpseclib/phpseclib": "^3.0",
         "pusher/pusher-php-server": "^7.2"
     },
